@@ -1,0 +1,33 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+	"labName": {
+      "value": "NimizDebug"
+    },
+    "userName": {
+      "value": ""
+    },
+    "password": {
+      "value": ""
+    },
+	"firstVMName": {
+      "value": "ad2012r2-dc"
+    },
+	"secondVMName": {
+      "value": "ad2012r2-db"
+    },
+    "vm1Image": {
+      "value": "/subscriptions/dc744faa-2afe-4999-8cde-6f5ccd68abdd/resourceGroups/nimizdebugrg003220/providers/Microsoft.Compute/snapshots/ad2012r2-dc-201707211150"
+    },
+    "vm2Image": {
+      "value": "/subscriptions/dc744faa-2afe-4999-8cde-6f5ccd68abdd/resourceGroups/nimizdebugrg003220/providers/Microsoft.Compute/snapshots/2012r2-sql14sp2-201707211157"
+    },
+    "vm1Size": {
+      "value": "Standard_DS2_v2"
+    },
+    "vm2Size": {
+      "value": "Standard_DS2_v2"
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+	"labName": {
+      "type": "string",
+      "defaultValue": "NimizDebug"
+    },
+    "userName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "password": {
+      "type": "securestring"
+    },
+	"firstVMName": {
+      "type": "string",
+      "defaultValue": "ad2012r2-dc"
+    },
+	"secondVMName": {
+      "type": "string",
+      "defaultValue": "ad2012r2-db"
+    },
+    "vm1Image": {
+      "type": "string",
+      "defaultValue": "ad2012r2-dc-201707211150"
+    },
+    "vm2Image": {
+      "type": "string",
+      "defaultValue": "2012r2-sql14sp2-201707211157"
+    },
+    "vm1Size": {
+      "type": "string",
+      "defaultValue": "Standard_DS2_v2"
+    },
+    "vm2Size": {
+      "type": "string",
+      "defaultValue": "Standard_DS2_v2"
+    }
+  },
+  "variables": {
+	"labSubnetName": "[concat(variables('labVirtualNetworkName'), 'Subnet')]",
+    "labVirtualNetworkId": "[resourceId('Microsoft.DevTestLab/labs/virtualnetworks', parameters('labName'), variables('labVirtualNetworkName'))]",
+    "labVirtualNetworkName": "[concat('Dtl', parameters('labName'))]",
+    "vm1Id": "[resourceId ('Microsoft.DevTestLab/labs/virtualmachines', parameters('labName'), parameters('firstVMName'))]",
+    "vm1Name": "[concat(parameters('labName'), '/', parameters('firstVMName'))]",
+    "vm2Id": "[resourceId ('Microsoft.DevTestLab/labs/virtualmachines', parameters('labName'), parameters('secondVMName'))]",
+    "vm2Name": "[concat(parameters('labName'), '/', parameters('secondVMName'))]"
+  },
+  "resources": [
+	{
+      "apiVersion": "2017-04-26-preview",
+      "type": "Microsoft.DevTestLab/labs/virtualmachines",
+      "name": "[variables('vm1Name')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "labVirtualNetworkId": "[variables('labVirtualNetworkId')]",
+        "notes": "",
+        "customImageId": "[parameters('vm1Image')]",
+        "size": "[parameters('vm1Size')]",
+        "userName": "[parameters('userName')]",
+        "password": "[parameters('password')]",
+        "isAuthenticationWithSshKey": false,
+        "labSubnetName": "[variables('labSubnetName')]",
+        "disallowPublicIpAddress": true,
+        "storageType": "Premium",
+        "allowClaim": false,
+        "networkInterface": {
+          "sharedPublicIpAddressConfiguration": {
+            "inboundNatRules": [
+              {
+                "transportProtocol": "tcp",
+                "backendPort": 3389
+              }
+            ]
+          }
+        }
+      }
+    },
+	{
+      "apiVersion": "2017-04-26-preview",
+      "type": "Microsoft.DevTestLab/labs/virtualmachines",
+      "name": "[variables('vm2Name')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "labVirtualNetworkId": "[variables('labVirtualNetworkId')]",
+        "notes": "",
+        "customImageId": "[parameters('vm2Image')]",
+        "size": "[parameters('size')]",
+        "userName": "[parameters('userName')]",
+        "password": "[parameters('password')]",
+        "isAuthenticationWithSshKey": false,
+        "labSubnetName": "[variables('labSubnetName')]",
+        "disallowPublicIpAddress": true,
+        "storageType": "Premium",
+        "allowClaim": false,
+        "networkInterface": {
+          "sharedPublicIpAddressConfiguration": {
+            "inboundNatRules": [
+              {
+                "transportProtocol": "tcp",
+                "backendPort": 3389
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+	"labVMId": {
+      "type": "string",
+      "value": "[variables('vm1Id')]"
+    },
+    "labVMId": {
+      "type": "string",
+      "value": "[variables('vm2Id')]"
+    }
+  }
+}

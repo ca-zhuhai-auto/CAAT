@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "001-create-two-vms-from-snapshots",
+  "description": "Create two VMs from custom images(snapshots) template.",
+  "summary": "Create two VMs from custom images(snapshots) template.  Use this template as the framework for your custom deployment.",
+  "githubUsername": "ca-zhuhai-auto",
+  "dateUpdated": "2017-07-27"
+}
